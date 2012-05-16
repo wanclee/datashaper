@@ -1,0 +1,8 @@
+The drivers below can be downloaded from the respective db vendor's site.
+
+oracle:      ojdbc5.jar or ojdbc6.jar
+ibm:         db2jcc4.jar
+postgresql:  postgresql-8.4-701.jdbc4.jar
+mysql:       mysql-connector-java-5.1.13-bin.jar
+mssqlserver: sqljdbc4.jar
+

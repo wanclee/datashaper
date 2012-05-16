@@ -1,0 +1,41 @@
+<!-- DataShape.dtd version 1.0.0 -->
+<!-- Copyright (C) 2010-2012 Wan Lee, wan5332@gmail.com  -->
+<!ELEMENT database ( connection ) >
+<!ELEMENT connection ( #PCDATA ) >
+<!ELEMENT datashape ( database, population-spec, tables-spec ) >
+<!ELEMENT population-spec ( table-population+ ) >
+<!ELEMENT tables-spec ( shared-sequence?, table+ ) >
+<!ELEMENT shared-sequence ( #PCDATA ) >
+<!ELEMENT table-population ( size, relationship?, fkey-providers? )+ >
+<!ELEMENT fkey-providers ( fkey-provider*, fkey-secondary-provider*, picklist* ) >
+<!ELEMENT relationship ( #PCDATA ) >
+<!ELEMENT size ( #PCDATA ) >
+<!ELEMENT fkey-provider ( filter?, (percent|size), random-select ) >
+<!ELEMENT fkey-secondary-provider ( filter?, (percent|size), random-select ) >
+<!ELEMENT picklist ( filter?, (percent|size), random-select ) >
+<!ELEMENT filter ( #PCDATA ) >
+<!ELEMENT percent ( #PCDATA ) >
+<!ELEMENT random-select ( #PCDATA ) >
+<!ELEMENT table ( local-sequence?, sql-statement, data-type, input-data, column-positions-in-query?, bindvar-column-positions? ) >
+<!ELEMENT local-sequence ( #PCDATA ) >
+<!ELEMENT sql-statement ( #PCDATA ) >
+<!ELEMENT data-type ( #PCDATA ) >
+<!ELEMENT input-data ( row+ ) >
+<!ELEMENT column-positions-in-query (column+) >
+<!ELEMENT bindvar-column-positions (column+) >
+<!ELEMENT filter-column ( #PCDATA ) >
+<!ELEMENT column ( #PCDATA ) >
+<!ELEMENT row ( #PCDATA ) >
+
+<!ATTLIST database type NMTOKEN #REQUIRED >
+<!ATTLIST fkey-provider name NMTOKEN #REQUIRED >
+<!ATTLIST fkey-secondary-provider name NMTOKEN #REQUIRED >
+<!ATTLIST picklist name NMTOKEN #REQUIRED >
+<!ATTLIST size create-new (true|false) "true" >
+<!ATTLIST table name NMTOKEN #REQUIRED
+			    record-id-type (numeric|alphanumeric) "numeric" >
+<!ATTLIST table-population name NMTOKEN #REQUIRED >
+<!ATTLIST shared-sequence name NMTOKEN #REQUIRED >
+<!ATTLIST local-sequence name NMTOKEN #REQUIRED >
+<!ATTLIST column name NMTOKEN #REQUIRED >
+

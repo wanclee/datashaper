@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+<!-- Example of using a query in the data shape configuration -->
+<datashape>
+  <database type="DB2">
+    <connection>jdbc:db2://localhost:50000/actproj</connection>
+  </database>
+  <population-spec>
+    <table-population name="USR">
+      <size create-new="false">by-query</size>
+    </table-population>
+    <table-population name="LOC">
+      <size>100</size>
+    </table-population>
+    <table-population name="USR_LOC">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <percent>10</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+        <fkey-provider name="LOC">
+          <percent>10</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <shared-sequence name="ACTPROJ"></shared-sequence>
+    <table name="USR">
+    <!-- note: order by clause in the sql didn't work in db2 jdbc driver; group by is OK -->
+<sql-statement>SELECT USR_ID FROM ACTPROJ.USR WHERE USR_TYPE=&apos;user&apos; group by USR_ID</sql-statement>
+      <data-type>empty</data-type>
+      <input-data>
+        <row>empty</row>
+      </input-data>
+    </table>
+    <table name="LOC">
+      <sql-statement>INSERT INTO ACTPROJ.LOC (LOC_ID, NAME) VALUES (?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;Main Residence${ds-default-signature}&apos;</row>
+      </input-data>
+    </table>
+    <table name="USR_LOC">
+      <sql-statement>INSERT INTO ACTPROJ.USR_LOC (USR_LOC_ID, LOC_ID, USR_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=LOC&apos;, &apos;${ds-fkey-provider}=USR&apos;</row>
+      </input-data>
+    </table>
+  </tables-spec>
+</datashape>

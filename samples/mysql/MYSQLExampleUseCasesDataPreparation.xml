@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+<!-- Create customers and sales-rep records as preparation for subsequent data population scenarios -->
+
+<datashape>
+  <database type="MYSQL">
+    <connection>jdbc:mysql://localhost:3306/actproj</connection>
+  </database>
+  <population-spec>
+    <table-population name="CUSTOMER">
+      <size>100</size>
+    </table-population>
+    <table-population name="SALESREP">
+      <size>100</size>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <table name="CUSTOMER">
+      <sql-statement>INSERT INTO actproj.USR (EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, TIMEZONE, DESCRIPTION) VALUES (?, ?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;customer${ds-uuid}@yahoo.com&apos;, &apos;Customer ${ds-uuid}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;customer${ds-uuid}@yahoo.com&apos;, &apos;Customer ${ds-uuid}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;customer${ds-uuid}@yahoo.com&apos;, &apos;Customer ${ds-uuid}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;customer${ds-uuid}@yahoo.com&apos;, &apos;Customer ${ds-uuid}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC-4&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;customer${ds-uuid}@yahoo.com&apos;, &apos;Customer ${ds-uuid}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC+4&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;customer${ds-uuid}@yahoo.com&apos;, &apos;Customer ${ds-uuid}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;customer${ds-uuid}@yahoo.com&apos;, &apos;Customer ${ds-uuid}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;customer${ds-uuid}@yahoo.com&apos;, &apos;Customer ${ds-uuid}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;customer${ds-uuid}@yahoo.com&apos;, &apos;Customer ${ds-uuid}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;customer${ds-uuid}@yahoo.com&apos;, &apos;Customer ${ds-uuid}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+    </table>
+    <table name="SALESREP">
+      <sql-statement>INSERT INTO actproj.USR (EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, TIMEZONE, TERRITORY, DESCRIPTION) VALUES (?, ?, ?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;salesrep${ds-uuid}@yahoo.com&apos;, &apos;Salesrep ${ds-uuid}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;USA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;salesrep${ds-uuid}@yahoo.com&apos;, &apos;Salesrep ${ds-uuid}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;USA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;salesrep${ds-uuid}@yahoo.com&apos;, &apos;Salesrep ${ds-uuid}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;USA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;salesrep${ds-uuid}@yahoo.com&apos;, &apos;Salesrep ${ds-uuid}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC-4&apos;, &apos;EU&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;salesrep${ds-uuid}@yahoo.com&apos;, &apos;Salesrep ${ds-uuid}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC+4&apos;, &apos;USA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;salesrep${ds-uuid}@yahoo.com&apos;, &apos;Salesrep ${ds-uuid}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;EU&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;salesrep${ds-uuid}@yahoo.com&apos;, &apos;Salesrep ${ds-uuid}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;USA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;salesrep${ds-uuid}@yahoo.com&apos;, &apos;Salesrep ${ds-uuid}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;EMEA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;salesrep${ds-uuid}@yahoo.com&apos;, &apos;Salesrep ${ds-uuid}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;EMEA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;salesrep${ds-uuid}@yahoo.com&apos;, &apos;Salesrep ${ds-uuid}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;EU&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+    </table>
+  </tables-spec>
+</datashape>

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+<!-- Example of 1:M relationship between a parent table and a child table -->
+<datashape>
+  <database type="MSSQLSERVER">
+    <connection>jdbc:sqlserver://localhost:1433;DatabaseName=actproj</connection>
+  </database>
+<population-spec>
+    <table-population name="USR">
+      <size>100</size>
+    </table-population>
+    <table-population name="ACTIVITY">
+      <size>100</size>
+      <relationship>1:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <!-- <percent>10</percent> -->
+          <size>10</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <table name="USR">
+      <sql-statement>INSERT INTO dbo.USR (EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, DESCRIPTION) VALUES (?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;johndoe533@yahoo.com&apos;, &apos;John Doe ${ds-uuid}&apos;, &apos;user&apos;, &apos;0&apos;, &apos;A software developer from Sunnyvale, California. ${ds-current-date} ${ds-default-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+    </table>
+    <table name="ACTIVITY">
+      <sql-statement>INSERT INTO dbo.ACTIVITY (USR_ID, DESCRIPTION, EFFECTIVE_START_DATE, EFFECTIVE_END_DATE) VALUES (?, ?, GETDATE(), DATEADD(day, 30, GETDATE()))</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-fkey-provider}=USR&apos;, &apos;Party at ${ds-uuid} Happy Road in downtown S.J.&apos;</row>
+      </input-data>
+    </table>
+  </tables-spec>
+</datashape>

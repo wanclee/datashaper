@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+
+<!-- Use Case: A pool of 30,000 new opportunities captured in a Leads Management System 
+on a daily basis will be distributed to 100 sales reps based on territory. -->
+
+<datashape>
+  <database type="MYSQL">
+    <connection>jdbc:mysql://localhost:3306/actproj</connection>
+  </database>
+  <population-spec>
+    <table-population name="OPPORTUNITY">
+      <size>3000</size>
+    </table-population>
+    <table-population name="SALESREP">
+      <size create-new="false">by-query</size>
+    </table-population>
+    <table-population name="OPPORTUNITY_SALESREP_1">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="OPPORTUNITY">
+          <filter>TERRITORY=&apos;USA&apos;</filter>
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SALESREP">
+          <filter>TERRITORY=&apos;USA&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="OPPORTUNITY_SALESREP_2">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="OPPORTUNITY">
+          <filter>TERRITORY=&apos;EU&apos;</filter>
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SALESREP">
+          <filter>TERRITORY=&apos;EU&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="OPPORTUNITY_SALESREP_3">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="OPPORTUNITY">
+          <filter>TERRITORY=&apos;EMEA&apos;</filter>
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SALESREP">
+          <filter>TERRITORY=&apos;EMEA&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <table name="OPPORTUNITY">
+      <sql-statement>INSERT INTO actproj.OPPTY (NAME, DEALSIZE, TERRITORY) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.lang.String, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$100,000.00&apos;, &apos;USA&apos;</row>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$100,000.00&apos;, &apos;EU&apos;</row>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$1,000,000.00&apos;, &apos;EMEA&apos;</row>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$1,000,000.00&apos;, &apos;USA&apos;</row>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$500,000.00&apos;, &apos;EU&apos;</row>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$600,000.00&apos;, &apos;EMEA&apos;</row>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$10,000,000.00&apos;, &apos;USA&apos;</row>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$30,000,000.00&apos;, &apos;USA&apos;</row>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$10,000.00&apos;, &apos;EU&apos;</row>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$3,000,000.00&apos;, &apos;USA&apos;</row>
+        <row>&apos;Opportunity${ds-uuid}&apos;, &apos;$700,000.00&apos;, &apos;EMEA&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="TERRITORY">3</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="OPPORTUNITY_SALESREP_1">
+      <sql-statement>INSERT INTO actproj.USR_OPPTY (USR_ID, OPPTY_ID) VALUES (?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-fkey-provider}=SALESREP&apos;, &apos;${ds-fkey-provider}=OPPORTUNITY&apos;</row>
+      </input-data>
+    </table>
+    <table name="OPPORTUNITY_SALESREP_2">
+      <sql-statement>INSERT INTO actproj.USR_OPPTY (USR_ID, OPPTY_ID) VALUES (?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-fkey-provider}=SALESREP&apos;, &apos;${ds-fkey-provider}=OPPORTUNITY&apos;</row>
+      </input-data>
+    </table>
+    <table name="OPPORTUNITY_SALESREP_3">
+      <sql-statement>INSERT INTO actproj.USR_OPPTY (USR_ID, OPPTY_ID) VALUES (?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-fkey-provider}=SALESREP&apos;, &apos;${ds-fkey-provider}=OPPORTUNITY&apos;</row>
+      </input-data>
+    </table>
+    <table name="SALESREP">
+	  <sql-statement>SELECT USR_ID, TERRITORY FROM actproj.USR WHERE USR_TYPE=&apos;sales-rep&apos; order by USR_ID limit 0, 1000000</sql-statement>
+      <data-type>empty</data-type>
+      <input-data>
+        <row>empty</row>
+      </input-data>
+      <column-positions-in-query>
+        <column name="TERRITORY">2</column>
+      </column-positions-in-query>
+    </table>
+  </tables-spec>
+</datashape>

@@ -1,0 +1,45 @@
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+The sample XML files depend on the schema called ACTPROJ, which can be created by
+executing actproj-db2.ddl
+
+Use the steps below to create ACTPROJ database in DB2 and populate data with the sample XML files:
+
+1. Create a user account called 'actproj' at system level. For example, in windows 7,
+    you create the user at system level by using Manage User Accounts; give it a
+    password 'actproj'.
+
+2. Launch DB2 command line processor (db2.exe) and do: 
+    db2 => create database actproj 
+    db2=> connect to actproj (as default admin user) 
+    db2=> grant connect on database to actproj (where actproj is a new user creatd under Manage User Accounts) 
+    db2=> create schema ACTPROJ authorization actproj 
+    db2=> connect to actproj user actproj using actproj
+    db2=> quit
+
+3. Next time you access DB2 from a new session, do: 
+    db2=> connect to actproj (as default admin user) 
+    db2 => start database manager 
+    db2 => connect to actproj user actproj using actproj
+
+4. Create the tables by cutting and pasting the content of actproj-db2.ddl into the
+   db2 session. 
+   
+   Multilines of DDL statements in the script file doesn't work well in DB2 command line
+   processor. As a workaround, use the single line CREATE statements at the end of file. 
+   
+   If you are re-creating tables, make sure the drop table commands are executed first. Just
+   cut/paste the list of DROP TABLE xxx commands at the beginning of the file.
+
+5. Need general help with db2 command line processor, type db2.exe ?
+
+6. Execute Command Line DataShaper in the installed directory to populate data in the database:
+     
+     Windows:    
+     java -classpath datashaper.jar;drivers\db2jcc4.jar com.psrtoolkit.datashaper.DataShaper -c samples\db2\DB2ExampleSimpleCreateCustomers.xml -u actproj -p actproj
+     
+     Linux:
+     java -classpath datashaper.jar:drivers/db2jcc4.jar com.psrtoolkit.datashaper.DataShaper -c samples/db2/DB2ExampleSimpleCreateCustomers.xml -u actproj -p actproj
+     
+     (note: assuming you put the jdbc driver under \drivers in the installed directory)
+     
+     

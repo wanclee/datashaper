@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+<!-- Use Case: A social network site requires that 10% of its 100,000 registered users 
+of age between 18 and 55 are members of 5% of the social networks of type ‘technology’, 
+and 50% of its members regardless of age are members of social network of type ‘shopping’, 
+and 40% of its members are members of social network of ‘cable TV’. There are 1,000,000 social networks-->
+
+<datashape>
+  <database type="POSTGRESQL">
+    <connection>jdbc:postgresql://localhost:5432/actproj</connection>
+  </database>
+  <population-spec>
+    <table-population name="USR">
+      <size>1000</size>
+    </table-population>
+    <table-population name="SN">
+      <size>1000</size>
+    </table-population>
+    <table-population name="USR_SN_1">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <filter>AGE &gt; 18 AND AGE &lt; 55</filter>
+          <percent>10</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+        <fkey-provider name="SN">
+          <filter>TYPE=&apos;technology&apos;</filter>
+          <percent>5</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="USR_SN_2">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <percent>50</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+        <fkey-provider name="SN">
+          <filter>TYPE=&apos;shopping&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="USR_SN_3">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <percent>40</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+        <fkey-provider name="SN">
+          <filter>TYPE=&apos;cable TV&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <shared-sequence name="ACTPROJ"></shared-sequence>
+    <table name="USR">
+      <sql-statement>INSERT INTO ACTPROJ.USR (USR_ID, EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, AGE, DESCRIPTION) VALUES (?, ?, ?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, int, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;JerryDoee${ds-uuid}@yahoo.com&apos;, &apos;Mary Doee&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;19&apos;, &apos;A real estate professional from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;JohnDoee${ds-uuid}@yahoo.com&apos;, &apos;John Doee&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;55&apos;, &apos;A dancer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;MarshalMacc${ds-uuid}@yahoo.com&apos;, &apos;Marshal Macc&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;18&apos;, &apos;A gaget geek from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;MaggieMacc${ds-uuid}@yahoo.com&apos;, &apos;Maggie Macc&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;40&apos;, &apos;A swimmer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;OprahOmnily${ds-uuid}@yahoo.com&apos;, &apos;Oprah Omnily&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;25&apos;, &apos;A mechanic from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;OJayOmnily${ds-uuid}@yahoo.com&apos;, &apos;OJay Omnily&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;16&apos;, &apos;A high schooler from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;PeterPenneyey${ds-uuid}@yahoo.com&apos;, &apos;Peter Penneyey&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;21&apos;, &apos;A singer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;PatersonPenneyey${ds-uuid}@yahoo.com&apos;, &apos;Paterson Penneyey&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;35&apos;, &apos;A teacher from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;LomaLomeei${ds-uuid}@yahoo.com&apos;, &apos;Loma Lomeei&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;21&apos;, &apos;A singer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;RosaLomeei${ds-uuid}@yahoo.com&apos;, &apos;Rosa Lomeei&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;35&apos;, &apos;A teacher from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="AGE">6</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="SN">
+      <sql-statement>INSERT INTO ACTPROJ.SN (SN_ID, NAME, TYPE) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;technology&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;technology&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;shopping&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;shopping&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;shopping&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;cable TV&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;cable TV&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;cable TV&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;cable TV&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;hunting&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="TYPE">3</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="USR_SN_1">
+      <sql-statement>INSERT INTO ACTPROJ.USR_SN (USR_SN_ID, USR_ID, SN_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=USR&apos;, &apos;${ds-fkey-provider}=SN&apos;</row>
+      </input-data>
+    </table>
+    <table name="USR_SN_2">
+      <sql-statement>INSERT INTO ACTPROJ.USR_SN (USR_SN_ID, USR_ID, SN_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=USR&apos;, &apos;${ds-fkey-provider}=SN&apos;</row>
+      </input-data>
+    </table>
+    <table name="USR_SN_3">
+      <sql-statement>INSERT INTO ACTPROJ.USR_SN (USR_SN_ID, USR_ID, SN_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=USR&apos;, &apos;${ds-fkey-provider}=SN&apos;</row>
+      </input-data>
+    </table>
+  </tables-spec>
+</datashape>

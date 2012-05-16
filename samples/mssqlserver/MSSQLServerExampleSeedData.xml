@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+<!-- Create the seed records with user-defined ids -->
+
+<datashape>
+  <database type="MSSQLSERVER">
+    <connection>jdbc:sqlserver://localhost:1433;DatabaseName=actproj</connection>
+  </database>
+  <population-spec>
+    <table-population name="USRTYPE">
+      <size>by-input-data</size>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <table name="USRTYPE">
+      <sql-statement>INSERT INTO dbo.USRTYPE (USRTYPE_ID, NAME) VALUES (?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-row-id}=10001&apos;, &apos;sales-rep&apos;</row>
+        <row>&apos;${ds-row-id}=10002&apos;, &apos;service-rep&apos;</row>
+        <row>&apos;${ds-row-id}=10003&apos;, &apos;customer&apos;</row>
+      </input-data>
+    </table>
+  </tables-spec>
+</datashape>

@@ -1,0 +1,374 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+<!-- Demonstration of merging data shape configurations into a single one -->
+<!-- Configuration for UseCase 1, 2 and 3 are combined here as an example -->
+<!-- For a small schema with less than 50 tables, this might be a manageable option -->
+<datashape>
+  <database type="ORCL">
+    <connection>jdbc:oracle:thin:@localhost:1521:xe</connection>
+  </database>
+  <population-spec>
+    <table-population name="CUSTOMER">
+      <size>10</size>
+    </table-population>
+    <table-population name="SALESREP">
+      <size>10</size>
+    </table-population>
+    <table-population name="USR">
+      <size>10</size>
+    </table-population>
+    <table-population name="SN">
+      <size>10</size>
+    </table-population>
+    <table-population name="SR">
+      <size>10</size>
+      <relationship>1:1</relationship>
+      <fkey-providers>
+        <fkey-provider name="CUSTOMER">
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="SRP">
+      <size>10</size>
+    </table-population>
+    <table-population name="OPPORTUNITY">
+      <size>10</size>
+    </table-population>
+    <table-population name="USR_SN_1">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <filter>AGE &gt; 18 AND AGE &lt; 55</filter>
+          <percent>10</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+        <fkey-provider name="SN">
+          <filter>TYPE=&apos;technology&apos;</filter>
+          <percent>5</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="USR_SN_2">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <percent>50</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+        <fkey-provider name="SN">
+          <filter>TYPE=&apos;shopping&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="USR_SN_3">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <percent>40</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+        <fkey-provider name="SN">
+          <filter>TYPE=&apos;cable TV&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="SR_SRP_1">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="SR">
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SRP">
+          <filter>TIMEZONE=&apos;UTC-7&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="SR_SRP_2">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="SR">
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SRP">
+          <filter>TIMEZONE=&apos;UTC&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="SR_SRP_3">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="SR">
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SRP">
+          <filter>TIMEZONE=&apos;UTC+8&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="OPPORTUNITY_SALESREP_1">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="OPPORTUNITY">
+          <filter>TERRITORY=&apos;USA&apos;</filter>
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SALESREP">
+          <filter>TERRITORY=&apos;USA&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="OPPORTUNITY_SALESREP_2">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="OPPORTUNITY">
+          <filter>TERRITORY=&apos;EU&apos;</filter>
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SALESREP">
+          <filter>TERRITORY=&apos;EU&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="OPPORTUNITY_SALESREP_3">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="OPPORTUNITY">
+          <filter>TERRITORY=&apos;EMEA&apos;</filter>
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SALESREP">
+          <filter>TERRITORY=&apos;EMEA&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <shared-sequence name="ACTPROJ"></shared-sequence>
+    <table name="CUSTOMER">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR&quot; (USR_ID, EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, TIMEZONE, DESCRIPTION) VALUES (?, ?, ?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;customer${ds-current-record-id}@yahoo.com&apos;, &apos;Customer ${ds-current-record-id}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;customer${ds-current-record-id}@yahoo.com&apos;, &apos;Customer ${ds-current-record-id}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;customer${ds-current-record-id}@yahoo.com&apos;, &apos;Customer ${ds-current-record-id}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;customer${ds-current-record-id}@yahoo.com&apos;, &apos;Customer ${ds-current-record-id}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC-4&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;customer${ds-current-record-id}@yahoo.com&apos;, &apos;Customer ${ds-current-record-id}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC+4&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;customer${ds-current-record-id}@yahoo.com&apos;, &apos;Customer ${ds-current-record-id}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;customer${ds-current-record-id}@yahoo.com&apos;, &apos;Customer ${ds-current-record-id}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;customer${ds-current-record-id}@yahoo.com&apos;, &apos;Customer ${ds-current-record-id}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;customer${ds-current-record-id}@yahoo.com&apos;, &apos;Customer ${ds-current-record-id}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;customer${ds-current-record-id}@yahoo.com&apos;, &apos;Customer ${ds-current-record-id}&apos;, &apos;customer&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A loyal customer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+    </table>
+    <table name="SALESREP">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR&quot; (USR_ID, EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, TIMEZONE, TERRITORY, DESCRIPTION) VALUES (?, ?, ?, ?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;salesrep${ds-current-record-id}@yahoo.com&apos;, &apos;Salesrep ${ds-current-record-id}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;USA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;salesrep${ds-current-record-id}@yahoo.com&apos;, &apos;Salesrep ${ds-current-record-id}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;USA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;salesrep${ds-current-record-id}@yahoo.com&apos;, &apos;Salesrep ${ds-current-record-id}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;USA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;salesrep${ds-current-record-id}@yahoo.com&apos;, &apos;Salesrep ${ds-current-record-id}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC-4&apos;, &apos;EU&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;salesrep${ds-current-record-id}@yahoo.com&apos;, &apos;Salesrep ${ds-current-record-id}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC+4&apos;, &apos;USA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;salesrep${ds-current-record-id}@yahoo.com&apos;, &apos;Salesrep ${ds-current-record-id}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;EU&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;salesrep${ds-current-record-id}@yahoo.com&apos;, &apos;Salesrep ${ds-current-record-id}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;USA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;salesrep${ds-current-record-id}@yahoo.com&apos;, &apos;Salesrep ${ds-current-record-id}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;EMEA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;salesrep${ds-current-record-id}@yahoo.com&apos;, &apos;Salesrep ${ds-current-record-id}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;EMEA&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;salesrep${ds-current-record-id}@yahoo.com&apos;, &apos;Salesrep ${ds-current-record-id}&apos;, &apos;sales-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;EU&apos;, &apos;A star sales representativefrom Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="TERRITORY">7</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="USR">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR&quot; (USR_ID, EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, AGE, DESCRIPTION) VALUES (?, ?, ?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, int, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;JerryDoee${ds-uuid}@yahoo.com&apos;, &apos;Mary Doee&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;19&apos;, &apos;A real estate professional from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;JohnDoee${ds-uuid}@yahoo.com&apos;, &apos;John Doee&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;55&apos;, &apos;A dancer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;MarshalMacc${ds-uuid}@yahoo.com&apos;, &apos;Marshal Macc&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;18&apos;, &apos;A gaget geek from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;MaggieMacc${ds-uuid}@yahoo.com&apos;, &apos;Maggie Macc&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;40&apos;, &apos;A swimmer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;OprahOmnily${ds-uuid}@yahoo.com&apos;, &apos;Oprah Omnily&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;25&apos;, &apos;A mechanic from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;OJayOmnily${ds-uuid}@yahoo.com&apos;, &apos;OJay Omnily&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;16&apos;, &apos;A high schooler from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;PeterPenneyey${ds-uuid}@yahoo.com&apos;, &apos;Peter Penneyey&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;21&apos;, &apos;A singer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;PatersonPenneyey${ds-uuid}@yahoo.com&apos;, &apos;Paterson Penneyey&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;35&apos;, &apos;A teacher from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;LomaLomeei${ds-uuid}@yahoo.com&apos;, &apos;Loma Lomeei&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;21&apos;, &apos;A singer from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;RosaLomeei${ds-uuid}@yahoo.com&apos;, &apos;Rosa Lomeei&apos;, &apos;user&apos;, &apos;123456&apos;, &apos;35&apos;, &apos;A teacher from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="AGE">6</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="SN">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;SN&quot; (SN_ID, NAME, TYPE) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;technology&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;technology&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;shopping&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;shopping&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;shopping&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;cable TV&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;cable TV&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;cable TV&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;cable TV&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Social Network${ds-current-record-id}&apos;, &apos;hunting&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="TYPE">3</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="USR_SN_1">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR_SN&quot; (USR_SN_ID, USR_ID, SN_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=USR&apos;, &apos;${ds-fkey-provider}=SN&apos;</row>
+      </input-data>
+    </table>
+    <table name="USR_SN_2">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR_SN&quot; (USR_SN_ID, USR_ID, SN_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=USR&apos;, &apos;${ds-fkey-provider}=SN&apos;</row>
+      </input-data>
+    </table>
+    <table name="USR_SN_3">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR_SN&quot; (USR_SN_ID, USR_ID, SN_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=USR&apos;, &apos;${ds-fkey-provider}=SN&apos;</row>
+      </input-data>
+    </table>
+    <table name="SRP">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR&quot; (USR_ID, EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, TIMEZONE, DESCRIPTION) VALUES (?, ?, ?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC-4&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC+4&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="TIMEZONE">6</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="SR">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;SR&quot; (SR_ID, NAME, SOURCE, CUSTOMER_ID) VALUES (?, ?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;US&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;US&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;US&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;US&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;US&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;EU&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;EU&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;EU&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;EMEA&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;EMEA&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+      </input-data>
+    </table>
+    <table name="SR_SRP_1">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR_SR&quot; (USR_SR_ID, USR_ID, SR_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=SRP&apos;, &apos;${ds-fkey-provider}=SR&apos;</row>
+      </input-data>
+    </table>
+    <table name="SR_SRP_2">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR_SR&quot; (USR_SR_ID, USR_ID, SR_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=SRP&apos;, &apos;${ds-fkey-provider}=SR&apos;</row>
+      </input-data>
+    </table>
+    <table name="SR_SRP_3">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR_SR&quot; (USR_SR_ID, USR_ID, SR_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=SRP&apos;, &apos;${ds-fkey-provider}=SR&apos;</row>
+      </input-data>
+    </table>
+    <table name="OPPORTUNITY">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;OPPTY&quot; (OPPTY_ID, NAME, DEALSIZE, TERRITORY) VALUES (?, ?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$100,000.00&apos;, &apos;USA&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$100,000.00&apos;, &apos;EU&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$1,000,000.00&apos;, &apos;EMEA&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$1,000,000.00&apos;, &apos;USA&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$500,000.00&apos;, &apos;EU&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$600,000.00&apos;, &apos;EMEA&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$10,000,000.00&apos;, &apos;USA&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$30,000,000.00&apos;, &apos;USA&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$10,000.00&apos;, &apos;EU&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$3,000,000.00&apos;, &apos;USA&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Opportunity${ds-current-record-id}&apos;, &apos;$700,000.00&apos;, &apos;EMEA&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="TERRITORY">4</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="OPPORTUNITY_SALESREP_1">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR_OPPTY&quot; (USR_OPPTY_ID, USR_ID, OPPTY_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=SALESREP&apos;, &apos;${ds-fkey-provider}=OPPORTUNITY&apos;</row>
+      </input-data>
+    </table>
+    <table name="OPPORTUNITY_SALESREP_2">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR_OPPTY&quot; (USR_OPPTY_ID, USR_ID, OPPTY_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=SALESREP&apos;, &apos;${ds-fkey-provider}=OPPORTUNITY&apos;</row>
+      </input-data>
+    </table>
+    <table name="OPPORTUNITY_SALESREP_3">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR_OPPTY&quot; (USR_OPPTY_ID, USR_ID, OPPTY_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=SALESREP&apos;, &apos;${ds-fkey-provider}=OPPORTUNITY&apos;</row>
+      </input-data>
+    </table>
+  </tables-spec>
+</datashape>

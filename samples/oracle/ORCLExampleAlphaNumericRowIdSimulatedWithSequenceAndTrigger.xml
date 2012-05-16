@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+<!-- Create records whose schema is using alphanumeric row ids -->
+<!-- Create the schema with actproj-orcl-alphanumeric-rowid-implicit-sequence-with-trigger.ddl first before running this configuration file -->
+<datashape>
+  <database type="ORCL">
+    <connection>jdbc:oracle:thin:@localhost:1521:xe</connection>
+  </database>
+  <population-spec>
+    <table-population name="USR">
+      <size>10</size>
+    </table-population>
+    <table-population name="LOC">
+      <size>10</size>
+    </table-population>
+    <table-population name="USR_LOC">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <percent>10</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+        <fkey-provider name="LOC">
+          <percent>10</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <table name="USR" record-id-type="alphanumeric">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR&quot; (EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, DESCRIPTION) VALUES (?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;johndoe533@yahoo.com&apos;, &apos;John Doe&apos;, &apos;user&apos;, &apos;0&apos;, &apos;A software developer from Sunnyvale, California. ${ds-current-date} ${ds-default-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;2johndoe533@yahoo.com&apos;, &apos;John Doe&apos;, &apos;user&apos;, &apos;0&apos;, &apos;A software developer from Sunnyvale, California. ${ds-current-date} ${ds-default-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;3johndoe533@yahoo.com&apos;, &apos;John Doe&apos;, &apos;user&apos;, &apos;0&apos;, &apos;A software developer from Sunnyvale, California. ${ds-current-date} ${ds-default-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+    </table>
+    <table name="LOC" record-id-type="alphanumeric">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;LOC&quot; (NAME) VALUES (?)</sql-statement>
+      <data-type>java.lang.String</data-type>
+      <input-data>
+        <row>&apos;Main Residence${ds-default-signature}&apos;</row>
+      </input-data>
+    </table>
+    <table name="USR_LOC" record-id-type="alphanumeric">
+      <sql-statement>INSERT INTO &quot;ACTPROJ&quot;.&quot;USR_LOC&quot; (LOC_ID, USR_ID) VALUES (?, ?)</sql-statement>
+      <data-type>java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-fkey-provider}=LOC&apos;, &apos;${ds-fkey-provider}=USR&apos;</row>
+      </input-data>
+    </table>
+  </tables-spec>
+</datashape>

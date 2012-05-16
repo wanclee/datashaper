@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+<!-- Denormalized column and picklist column examples -->
+<!-- Demormalized columns are columns in child table that are storing duplicate data from parent table -->
+<!-- typically the parent id is stored along with other parent attribute data -->
+<!-- picklist is LIST OF VALUES; picklist column stores only one selected attribute value from the picklist -->
+
+<datashape>
+  <database type="MSSQLSERVER">
+    <connection>jdbc:sqlserver://localhost:1433;DatabaseName=actproj</connection>
+  </database>
+  <population-spec>
+    <table-population name="USR">
+      <size>100</size>
+      <relationship>1:1</relationship>
+      <fkey-providers>
+        <picklist name="USER_TYPE_PICKLIST">
+          <!-- <filter>NAME=&apos;sales-rep2&apos;</filter> -->
+	      <size>1</size>
+          <random-select>true</random-select>
+        </picklist>
+      </fkey-providers>
+    </table-population>
+    <table-population name="LOC">
+      <size>100</size>
+    </table-population>
+    <table-population name="USER_TYPE_PICKLIST">
+      <size create-new="false">by-query</size>
+    </table-population>
+    <table-population name="ADDRESS">
+      <size>50</size>
+    </table-population>
+    <table-population name="USR_LOC">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <percent>10</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+        <fkey-provider name="LOC">
+          <!-- <filter>TIMEZONE=&apos;UTC+0&apos;</filter> -->
+          <percent>10</percent>
+          <random-select>true</random-select>
+        </fkey-provider>
+        <!-- USR_LOC can have relationship with other entities such as ADDRESS, but such relationship is not the main one -->
+        <fkey-secondary-provider name="ADDRESS">
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-secondary-provider>
+      </fkey-providers>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <table name="USR">
+      <sql-statement>INSERT INTO dbo.USR (EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, DESCRIPTION) VALUES (?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;johndoe533@yahoo.com&apos;, &apos;John Doe ${ds-uuid}&apos;, &apos;${ds-picklist}=USER_TYPE_PICKLIST.NAME&apos;, &apos;0&apos;, &apos;A software developer from Sunnyvale, California. ${ds-current-date} ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;2johndoe533@yahoo.com&apos;, &apos;John Doe ${ds-uuid}&apos;, &apos;${ds-picklist}=USER_TYPE_PICKLIST.NAME&apos;, &apos;0&apos;, &apos;A software developer from Sunnyvale, California. ${ds-current-date} ${ds-default-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;3johndoe533@yahoo.com&apos;, &apos;John Doe ${ds-uuid}&apos;, &apos;${ds-picklist}=USER_TYPE_PICKLIST.NAME&apos;, &apos;0&apos;, &apos;A software developer from Sunnyvale, California. ${ds-current-date} ${ds-default-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+    </table>
+    <table name="LOC">
+      <sql-statement>INSERT INTO dbo.LOC (NAME, TIMEZONE) VALUES (?, ?)</sql-statement>
+      <data-type>java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;Main Residence${ds-uuid}&apos;, &apos;UTC+8&apos;</row>
+        <row>&apos;Main Residence${ds-uuid}&apos;, &apos;UTC+0&apos;</row>
+        <row>&apos;Main Residence${ds-uuid}&apos;, &apos;UTC-8&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="NAME">1</column>
+        <column name="TIMEZONE">2</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="USR_LOC">
+      <sql-statement>INSERT INTO dbo.USR_LOC (LOC_ID, USR_ID, LOC_NAME, LOC_TIMEZONE, ADDRESS_ID, ADDRESS_ZIPCODE) VALUES (?, ?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-fkey-provider}=LOC&apos;, &apos;${ds-fkey-provider}=USR&apos;, 
+        &apos;${ds-denorm-val}=LOC.NAME&apos;, &apos;${ds-denorm-val}=LOC.TIMEZONE&apos;, 
+        &apos;${ds-fkey-secondary-provider}=ADDRESS&apos;, &apos;${ds-denorm-val}=ADDRESS.ZIPCODE&apos;</row>
+      </input-data>
+    </table>
+    <table name="ADDRESS">
+      <sql-statement>INSERT INTO dbo.ADDRESS (STREET_NUMBER, STREET_NAME, CITY, STATE, ZIPCODE, COUNTRY ) VALUES (?, ?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-uuid}&apos;, &apos;Happy Days Ave&apos;, &apos;Sunnyval&apos;, &apos;California&apos;, &apos;94087&apos;, &apos;USA&apos;</row>
+        <row>&apos;${ds-uuid}&apos;, &apos;Happy Days Ave&apos;, &apos;Phoenix&apos;, &apos;Arizona&apos;, &apos;94087&apos;, &apos;USA&apos;</row>
+        <row>&apos;${ds-uuid}&apos;, &apos;Happy Days Ave&apos;, &apos;Orlando&apos;, &apos;Florida&apos;, &apos;94087&apos;, &apos;USA&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="ZIPCODE">5</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="USER_TYPE_PICKLIST">
+      <sql-statement>SELECT USRTYPE_ID, NAME FROM dbo.USRTYPE group by USRTYPE_ID, NAME order by USRTYPE_ID</sql-statement>
+      <data-type>empty</data-type>
+      <input-data>
+        <row>empty</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="NAME">2</column>
+      </bindvar-column-positions>
+    </table>
+  </tables-spec>
+</datashape>

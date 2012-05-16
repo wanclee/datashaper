@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+<!-- Example of 1:1 relationship between a parent table and a child table -->
+<datashape>
+  <database type="MSSQLSERVER">
+    <connection>jdbc:sqlserver://localhost:1433;DatabaseName=actproj</connection>
+  </database>
+  <population-spec>
+    <table-population name="USR">
+      <size>100</size>
+    </table-population>
+    <table-population name="PROFILE">
+      <size>100</size>
+      <relationship>1:1</relationship>
+      <fkey-providers>
+        <fkey-provider name="USR">
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <table name="USR">
+      <sql-statement>INSERT INTO dbo.USR (EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, DESCRIPTION) VALUES (?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;johndoe${ds-uuid}@yahoo.com&apos;, &apos;John Doe ${ds-uuid}&apos;, &apos;user&apos;, &apos;0&apos;, &apos;A software developer from Sunnyvale, California. ${ds-current-date} ${ds-default-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+    </table>
+    <table name="PROFILE">
+      <sql-statement>INSERT INTO dbo.PROFILE (USR_ID, DESCRIPTION) VALUES (?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-fkey-provider}=USR&apos;, &apos;Always hang out at Face Bookstore ${ds-uuid}&apos;</row>
+      </input-data>
+    </table>
+  </tables-spec>
+</datashape>

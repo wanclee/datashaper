@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE datashape SYSTEM "DataShape.dtd">
+
+<!-- Copyright (C) 2010-2012, Wan Lee, wan5332@gmail.com -->
+<!-- Use Case: An eService SAAS site requires that 50% of its 10,000,000 service request originates in U.S, 
+30% Europe, and the remaining EMEA; and each service request belongs to one and only one customer 
+and is associated with at least three service reps , each of them is from a different geographic time zone. -->
+
+<datashape>
+  <database type="POSTGRESQL">
+    <connection>jdbc:postgresql://localhost:5432/actproj</connection>
+  </database>
+  <population-spec>
+    <table-population name="CUSTOMER">
+      <size create-new="false">by-query</size>
+    </table-population>
+    <table-population name="SR">
+      <size>100</size>
+      <relationship>1:1</relationship>
+      <fkey-providers>
+        <fkey-provider name="CUSTOMER">
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="SRP">
+      <size>100</size>
+    </table-population>
+    <table-population name="SR_SRP_1">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="SR">
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SRP">
+          <filter>TIMEZONE=&apos;UTC-7&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="SR_SRP_2">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="SR">
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SRP">
+          <filter>TIMEZONE=&apos;UTC&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+    <table-population name="SR_SRP_3">
+      <size>by-derivation</size>
+      <relationship>M:M</relationship>
+      <fkey-providers>
+        <fkey-provider name="SR">
+          <percent>100</percent>
+          <random-select>false</random-select>
+        </fkey-provider>
+        <fkey-provider name="SRP">
+          <filter>TIMEZONE=&apos;UTC+8&apos;</filter>
+	      <size>1</size>
+          <random-select>true</random-select>
+        </fkey-provider>
+      </fkey-providers>
+    </table-population>
+  </population-spec>
+  <tables-spec>
+    <shared-sequence name="ACTPROJ"></shared-sequence>
+    <table name="SRP">
+      <sql-statement>INSERT INTO ACTPROJ.USR (USR_ID, EMAIL, NAME, USR_TYPE, SYS_TENANT_ID, TIMEZONE, DESCRIPTION) VALUES (?, ?, ?, ?, ?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String, java.lang.String, java.math.BigDecimal, java.lang.String, java.lang.String</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC-4&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC+4&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC+8&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC-7&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;servicerep${ds-current-record-id}@yahoo.com&apos;, &apos;Service Rep ${ds-current-record-id}&apos;, &apos;service-rep&apos;, &apos;123456&apos;, &apos;UTC&apos;, &apos;A dedicated service representative from Sunnyvale, California. ${ds-user-signature} ${ds-current-datetime}&apos;</row>
+      </input-data>
+      <bindvar-column-positions>
+        <column name="TIMEZONE">6</column>
+      </bindvar-column-positions>
+    </table>
+    <table name="SR">
+      <sql-statement>INSERT INTO ACTPROJ.SR (SR_ID, NAME, SOURCE, CUSTOMER_ID) VALUES (?, ?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.lang.String, java.lang.String, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;US&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;US&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;US&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;US&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;US&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;EU&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;EU&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;EU&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;EMEA&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+        <row>&apos;${ds-nextval}&apos;, &apos;Service Request${ds-current-record-id}&apos;, &apos;EMEA&apos;, &apos;${ds-fkey-provider}=CUSTOMER&apos;</row>
+      </input-data>
+    </table>
+    <table name="SR_SRP_1">
+      <sql-statement>INSERT INTO ACTPROJ.USR_SR (USR_SR_ID, USR_ID, SR_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=SRP&apos;, &apos;${ds-fkey-provider}=SR&apos;</row>
+      </input-data>
+    </table>
+    <table name="SR_SRP_2">
+      <sql-statement>INSERT INTO ACTPROJ.USR_SR (USR_SR_ID, USR_ID, SR_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=SRP&apos;, &apos;${ds-fkey-provider}=SR&apos;</row>
+      </input-data>
+    </table>
+    <table name="SR_SRP_3">
+      <sql-statement>INSERT INTO ACTPROJ.USR_SR (USR_SR_ID, USR_ID, SR_ID) VALUES (?, ?, ?)</sql-statement>
+      <data-type>java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal</data-type>
+      <input-data>
+        <row>&apos;${ds-nextval}&apos;, &apos;${ds-fkey-provider}=SRP&apos;, &apos;${ds-fkey-provider}=SR&apos;</row>
+      </input-data>
+    </table>
+    <table name="CUSTOMER">
+	  <sql-statement>SELECT USR_ID FROM ACTPROJ.USR WHERE USR_TYPE=&apos;customer&apos; group by USR_ID order by USR_ID offset 0 limit 1000000</sql-statement>
+      <data-type>empty</data-type>
+      <input-data>
+        <row>empty</row>
+      </input-data>
+    </table>
+  </tables-spec>
+</datashape>
