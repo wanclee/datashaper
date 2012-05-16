@@ -5,11 +5,13 @@ Volume data population based on data shape definition and db-agnostic command-li
 Copyright (C) 2010-2012 Wan Lee, wan5332@gmail.com. All rights reserved.
 
 
-- To build datashaper.jar, type 'ant' on the command line
-
-- To package the binaries nicely for distribution (as a .zip file), type 'ant zip4download'
-
 - Before you start using the software, please read and agree to the licensing terms and conditions stated in license.txt file.
+
+- Download the jdbc driver from the db vendor's site and put it in /drivers folder (the build file requires /drivers to be on the classpath). The User Guide has the list of driver names.
+
+- To build datashaper.jar, type 'ant' on the command line (note: you will need ojdbc5.jar or ojdbc6.jar in order to compile Oracle-specific integration code)
+
+- To package the compiled binaries for distribution (as a .zip file), type 'ant zip4download'
 
 - How to get started?
 
@@ -20,7 +22,6 @@ Copyright (C) 2010-2012 Wan Lee, wan5332@gmail.com. All rights reserved.
     -- The /samples directory has many sample XML configuration files and their database schema DDL files. 
        Select the vendor-name sub-directory and read HowToStart.txt file.
 
-- Download the jdbc driver from the db vendor's site and put it in /drivers folder (or any location you desired). The User Guide has the list of driver names.
 
 - To run the program with the given samples on the command line (say for example you're using mysql):
 
